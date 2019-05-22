@@ -39,6 +39,12 @@ func get_dht_data() (dht_data, error) {
 
 
 
+func http_handler_root(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprint(w, "<html><body><a href='/c'>celsius</a><br/><a href='/f'>fahrenheit</a></body></html>")
+}
+
+
+
 func http_handler_f(w http.ResponseWriter, r *http.Request) {
     data, err := get_dht_data()
     if err != nil {
@@ -62,6 +68,7 @@ func http_handler_c(w http.ResponseWriter, r *http.Request) {
 func start_http() {
     log.SetFlags(log.Flags()|log.Lshortfile)
     log.Println("Starting webserver")
+    http.HandleFunc("/", http_handler_root)
     http.HandleFunc("/f", http_handler_f)
     http.HandleFunc("/c", http_handler_c)
     http.ListenAndServe(http_port, nil)
